@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "allowJs": true,
+    "outDir": "./dist",
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@api/*": ["src/api/*"],
+      "@components/*": ["src/Components/*"],
+      "@constants/*": ["src/Constants/*"],
+      "@pages/*": ["src/Pages/*"],
+      "@styles/*": ["src/Styles/*"],
+      "@services/*": ["src/services/*"],
+      "@typings/*": ["src/typings/*"],
+      "@utils/*": ["src/utils/*"],
+      "@hooks/*": ["src/hooks/*"]
+    }
+  },
+
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
