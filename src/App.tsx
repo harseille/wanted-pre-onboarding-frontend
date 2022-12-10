@@ -1,6 +1,13 @@
-import { RouterProvider } from 'react-router-dom';
-import router from './router';
+import { BrowserRouter } from 'react-router-dom';
+import TodoProvider from './store/todo/TodoProvider';
+import Router from './Router';
 
-const App = () => <RouterProvider router={router} />;
+const App = () => (
+  <BrowserRouter>
+    <TodoProvider>
+      <Router />
+    </TodoProvider>
+  </BrowserRouter>
+);
 
 export default App;

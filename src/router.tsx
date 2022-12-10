@@ -1,13 +1,10 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AuthPage, TodoPage } from './pages';
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<AuthPage />} />
-      <Route path="/todo" element={<TodoPage />} />
-    </Route>
-  )
+const Router = () => (
+  <Routes>
+    <Route path="/" element={<AuthPage />} />
+    <Route path="/todo" element={<TodoPage />} />
+  </Routes>
 );
-
-export default router;
+export default Router;
