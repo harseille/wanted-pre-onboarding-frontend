@@ -1,38 +1,50 @@
-import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Wrapper, Title, Input, Button } from 'src/components/common';
+import { useJWT } from 'src/hooks';
+import styled from '@emotion/styled';
 
-const Todo = () => (
-  <TodoContainer>
-    <Header>
-      <TodoTitle>Todo List</TodoTitle>
-    </Header>
-    <Main>
-      <TodoInputForm>
-        <TodoInput type="text" placeholder="할 일을 입력해주세요" />
-        <SubmitButton>추가</SubmitButton>
-      </TodoInputForm>
-      <TodoList>
-        <TodoItem>
-          <EditInput type="text" value="todo test" />
-          <ButtonGroup>
-            <SubmitButton>제출</SubmitButton>
-            <CancelButton>취소</CancelButton>
-          </ButtonGroup>
-        </TodoItem>
-        <TodoItem>
-          <TodoCheck>
-            <TodoCheckBox type="checkbox" id="todo" />
-            <TodoText htmlFor="todo">오늘 할 일</TodoText>
-          </TodoCheck>
-          <ButtonGroup>
-            <ConfirmButton>수정</ConfirmButton>
-            <CancelButton>삭제</CancelButton>
-          </ButtonGroup>
-        </TodoItem>
-      </TodoList>
-    </Main>
-  </TodoContainer>
-);
+const Todo = () => {
+  const { getJWT } = useJWT();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!getJWT()) {
+      navigate('/');
+    }
+  }, [getJWT, navigate]);
+  return (
+    <TodoContainer>
+      <Header>
+        <TodoTitle>Todo List</TodoTitle>
+      </Header>
+      <Main>
+        <TodoInputForm>
+          <TodoInput type="text" placeholder="할 일을 입력해주세요" />
+          <SubmitButton>추가</SubmitButton>
+        </TodoInputForm>
+        <TodoList>
+          <TodoItem>
+            <EditInput type="text" value="todo test" />
+            <ButtonGroup>
+              <SubmitButton>제출</SubmitButton>
+              <CancelButton>취소</CancelButton>
+            </ButtonGroup>
+          </TodoItem>
+          <TodoItem>
+            <TodoCheck>
+              <TodoCheckBox type="checkbox" id="todo" />
+              <TodoText htmlFor="todo">오늘 할 일</TodoText>
+            </TodoCheck>
+            <ButtonGroup>
+              <ConfirmButton>수정</ConfirmButton>
+              <CancelButton>삭제</CancelButton>
+            </ButtonGroup>
+          </TodoItem>
+        </TodoList>
+      </Main>
+    </TodoContainer>
+  );
+};
 
 export default Todo;
 const TodoContainer = styled.div`
