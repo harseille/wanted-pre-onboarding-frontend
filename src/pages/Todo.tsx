@@ -11,7 +11,7 @@ const Todo = () => {
     if (!getJWT()) {
       navigate('/');
     }
-  }, []);
+  }, [getJWT, navigate]);
   return (
     <TodoContainer>
       <Header>

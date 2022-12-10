@@ -12,7 +12,7 @@ const Auth = () => {
     if (getJWT()) {
       navigate('/todo');
     }
-  });
+  }, [getJWT, navigate]);
 
   return (
     <LoginWrapper>
