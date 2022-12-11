@@ -7,4 +7,5 @@ const Router = () => (
     <Route path="/todo" element={<TodoPage />} />
   </Routes>
 );
+
 export default Router;
