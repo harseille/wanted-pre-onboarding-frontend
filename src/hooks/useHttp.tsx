@@ -9,7 +9,7 @@ type TRequestProps = {
 const useHttp = () => {
   const sendRequest = useCallback(async (url: string, requestConfig: TRequestProps, applyData: Function) => {
     try {
-      const response = await fetch(`https://pre-onboarding-selection-task.shop/${url}`, requestConfig);
+      const response = await fetch(`${process.env.REACT_APP_HOST}${url}`, requestConfig);
 
       if (!response.ok) {
         throw new Error('http 통신 error');
