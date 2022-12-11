@@ -13,7 +13,6 @@ const TodoForm = () => {
 
   const submitTodoHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(todoInputRef.current!.value);
 
     todoCtx.addTodo(todoInputRef.current!.value);
     todoInputRef.current!.value = '';
