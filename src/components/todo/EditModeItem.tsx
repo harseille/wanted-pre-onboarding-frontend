@@ -7,33 +7,35 @@ import TodoButtonGroup from './TodoButtonGroup';
 
 type Tprop = {
   todoInfo: TTodo;
-  isEditMode: boolean;
-  cancelEditMode: any;
+  changeTodoMode: () => void;
 };
 
 const EditModeItem = (props: Tprop) => {
-  const { todoInfo, isEditMode, cancelEditMode } = props;
+  const { todoInfo, changeTodoMode } = props;
   const editInput = useRef<HTMLInputElement>(null);
-  const todoCtx = useContext(TodoContext);
+  const { updateTodo } = useContext(TodoContext);
 
   useEffect(() => {
     editInput.current!.value = todoInfo.todo;
   }, []);
 
-  const updateTodo = () => {
-    todoCtx.updateTodo(todoInfo.id, editInput.current!.value, todoInfo.isCompleted);
-    cancelEditMode();
+  const onPositiveHandler = () => {
+    updateTodo(todoInfo.id, editInput.current!.value, todoInfo.isCompleted);
+    changeTodoMode();
+  };
+
+  const onNegativeHandler = () => {
+    changeTodoMode();
   };
 
   return (
     <>
       <EditInput type="text" ref={editInput} />
       <TodoButtonGroup
-        isEditMode={isEditMode}
         confirmText="완료"
         cancelText="취소"
-        updateTodo={updateTodo}
-        cancelEditMode={cancelEditMode as React.MouseEventHandler}
+        onClickPositive={onPositiveHandler}
+        onClickNegative={onNegativeHandler}
       />
     </>
   );

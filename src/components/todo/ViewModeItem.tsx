@@ -6,36 +6,43 @@ import TodoButtonGroup from './TodoButtonGroup';
 
 type TProps = {
   todoInfo: TTodo;
-  isEditMode: boolean;
-  setEditMode: React.MouseEventHandler;
+  changeTodoMode: () => void;
 };
 
 const ViewModeItem = (props: TProps) => {
-  const { todoInfo, isEditMode, setEditMode } = props;
-  const todoCtx = useContext(TodoContext);
+  const { todoInfo, changeTodoMode } = props;
+  const { deleteTodo, checkTodo } = useContext(TodoContext);
 
-  const deleteTodo = () => {
-    todoCtx.deleteTodo(todoInfo.id);
+  const onCheckTodoHandler = () => {
+    checkTodo(todoInfo.id);
   };
 
-  const checkTodo = () => {
-    todoCtx.checkTodo(todoInfo.id);
+  const onPositiveHandler = () => {
+    changeTodoMode();
+  };
+
+  const onNegativeHandler = () => {
+    deleteTodo(todoInfo.id);
   };
 
   return (
     <>
       <TodoCheck>
-        <TodoCheckBox type="checkbox" id={todoInfo.id + ''} checked={todoInfo.isCompleted} onChange={checkTodo} />
+        <TodoCheckBox
+          type="checkbox"
+          id={todoInfo.id + ''}
+          checked={todoInfo.isCompleted}
+          onChange={onCheckTodoHandler}
+        />
         <TodoText htmlFor={todoInfo.id + ''} isCompleted={todoInfo.isCompleted}>
           {todoInfo.todo}
         </TodoText>
       </TodoCheck>
       <TodoButtonGroup
-        isEditMode={isEditMode}
         confirmText="수정"
         cancelText="삭제"
-        deleteTodo={deleteTodo}
-        setEditMode={setEditMode}
+        onClickPositive={onPositiveHandler}
+        onClickNegative={onNegativeHandler}
       />
     </>
   );

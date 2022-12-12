@@ -1,6 +1,6 @@
 import { useReducer, useRef } from 'react';
 import { useHttp, useJWT } from 'src/hooks';
-import { TTodo, TDefaultTodo } from 'src/typing/todo';
+import { TTodo, TDefaultTodo, TTodoMode } from 'src/typing/todo';
 import TodoContext from './todo-context';
 
 type TAction = {
@@ -8,6 +8,7 @@ type TAction = {
   targetTodo?: TTodo;
   fetchTodo?: TTodo[];
   id?: number;
+  mode?: TTodoMode;
 };
 
 type TProvier = {

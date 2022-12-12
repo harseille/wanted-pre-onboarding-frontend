@@ -2,22 +2,19 @@ import styled from '@emotion/styled';
 import { Button } from '../common';
 
 type TProps = {
-  isEditMode: boolean;
   confirmText: string;
   cancelText: string;
-  updateTodo?: React.MouseEventHandler;
-  deleteTodo?: React.MouseEventHandler;
-  setEditMode?: React.MouseEventHandler;
-  cancelEditMode?: React.MouseEventHandler;
+  onClickPositive: React.MouseEventHandler;
+  onClickNegative: React.MouseEventHandler;
 };
 
 const TodoButtonGroup = (props: TProps) => {
-  const { isEditMode, confirmText, cancelText } = props;
+  const { confirmText, cancelText, onClickPositive, onClickNegative } = props;
 
   return (
     <ButtonGroup>
-      <ConfirmButton onClick={isEditMode ? props.updateTodo : props.setEditMode}>{confirmText}</ConfirmButton>
-      <CancelButton onClick={isEditMode ? props.cancelEditMode : props.deleteTodo}>{cancelText}</CancelButton>
+      <PositiveButton onClick={onClickPositive}>{confirmText}</PositiveButton>
+      <NegativeButton onClick={onClickNegative}>{cancelText}</NegativeButton>
     </ButtonGroup>
   );
 };
@@ -32,7 +29,7 @@ const ButtonGroup = styled.div`
   height: 4rem;
 `;
 
-const ConfirmButton = styled(Button)`
+const PositiveButton = styled(Button)`
   background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.wantedGreen};
   border: 1px solid ${({ theme }) => theme.colors.wantedGreen};
@@ -44,7 +41,7 @@ const ConfirmButton = styled(Button)`
     background: ${({ theme }) => theme.colors.wantedGreen};
   }
 `;
-const CancelButton = styled(Button)`
+const NegativeButton = styled(Button)`
   background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.wantedRed};
   border: 1px solid ${({ theme }) => theme.colors.wantedRed};
