@@ -1,6 +1,6 @@
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
-import { TTodo } from 'src/typing/todo';
+import { TTodo, TTodoMode } from 'src/typing/todo';
 import EditModeItem from './EditModeItem';
 import ViewModeItem from './ViewModeItem';
 
@@ -9,29 +9,23 @@ type TProps = {
 };
 
 const TodoItem = (props: TProps) => {
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [todoMode, setTodoMode] = useState<TTodoMode>('view');
   const { todoInfo } = props;
 
-  const setEditModeHandler = () => {
-    setIsEditMode(true);
-  };
-
-  const cancelEditModeHandler = () => {
-    setIsEditMode(false);
+  const changeTodoMode = () => {
+    if (todoMode === 'view') setTodoMode('edit');
+    if (todoMode === 'edit') setTodoMode('view');
   };
 
   return (
     <Item key={todoInfo.id}>
-      {isEditMode ? (
-        <EditModeItem todoInfo={todoInfo} isEditMode={isEditMode} cancelEditMode={cancelEditModeHandler} />
-      ) : (
-        <ViewModeItem todoInfo={todoInfo} isEditMode={isEditMode} setEditMode={setEditModeHandler} />
-      )}
+      {todoMode === 'edit' && <EditModeItem todoInfo={todoInfo} changeTodoMode={changeTodoMode} />}
+      {todoMode === 'view' && <ViewModeItem todoInfo={todoInfo} changeTodoMode={changeTodoMode} />}
     </Item>
   );
 };
 
-export default memo(TodoItem);
+export default TodoItem;
 
 const Item = styled.li`
   display: flex;

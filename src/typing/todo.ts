@@ -5,6 +5,8 @@ export type TTodo = {
   userId: number;
 };
 
+export type TTodoMode = 'view' | 'edit';
+
 export type TDefaultTodo = {
   todoList: TTodo[] | [];
 };
