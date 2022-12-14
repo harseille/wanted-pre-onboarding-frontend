@@ -1,4 +1,4 @@
-import { useReducer, useRef } from 'react';
+import { useCallback, useMemo, useReducer, useRef } from 'react';
 import { useHttp, useJWT } from 'src/hooks';
 import { TTodo, TDefaultTodo, TTodoMode } from 'src/typing/todo';
 import TodoContext from './todo-context';
@@ -56,7 +56,7 @@ const TodoProvider = ({ children }: TProvier) => {
   const { getJWT } = useJWT();
   const jwt = getJWT();
 
-  const fetchTodoHandler = async () => {
+  const fetchTodoHandler = useCallback(async () => {
     await sendRequest(
       'todos',
       {
@@ -68,65 +68,77 @@ const TodoProvider = ({ children }: TProvier) => {
       }
     );
     dispatchTodoAction({ type: 'FETCH', fetchTodo: tempTodoList.current });
-  };
+  }, [sendRequest, jwt]);
 
-  const addTodoHandler = async (newTodo: string) => {
-    if (newTodo.trim().length === 0) return;
-    await sendRequest(
-      'todos',
-      {
-        method: 'POST',
-        headers: new Headers({ Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ todo: newTodo }),
-      },
-      (newTodo: TTodo) => {
-        tempTodo.current = newTodo;
-      }
-    );
-    dispatchTodoAction({ type: 'ADD', targetTodo: tempTodo.current });
-  };
+  const addTodoHandler = useCallback(
+    async (newTodo: string) => {
+      if (newTodo.trim().length === 0) return;
+      await sendRequest(
+        'todos',
+        {
+          method: 'POST',
+          headers: new Headers({ Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ todo: newTodo }),
+        },
+        (newTodo: TTodo) => {
+          tempTodo.current = newTodo;
+        }
+      );
+      dispatchTodoAction({ type: 'ADD', targetTodo: tempTodo.current });
+    },
+    [sendRequest, jwt]
+  );
 
-  const updateTodoHandler = async (id: number, updateTodo: string, isCompleted: boolean) => {
-    if (updateTodo.trim().length === 0) return;
+  const updateTodoHandler = useCallback(
+    async (id: number, updateTodo: string, isCompleted: boolean) => {
+      if (updateTodo.trim().length === 0) return;
 
-    await sendRequest(
-      `todos/${id}`,
-      {
-        method: 'PUT',
-        headers: new Headers({ Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ todo: updateTodo, isCompleted }),
-      },
-      (updateTodo: TTodo) => {
-        tempTodo.current = updateTodo;
-      }
-    );
-    dispatchTodoAction({ type: 'UPDATE', id, targetTodo: tempTodo.current });
-  };
+      await sendRequest(
+        `todos/${id}`,
+        {
+          method: 'PUT',
+          headers: new Headers({ Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ todo: updateTodo, isCompleted }),
+        },
+        (updateTodo: TTodo) => {
+          tempTodo.current = updateTodo;
+        }
+      );
+      dispatchTodoAction({ type: 'UPDATE', id, targetTodo: tempTodo.current });
+    },
+    [sendRequest, jwt]
+  );
 
-  const deleteTodoHandler = async (id: number) => {
-    await sendRequest(
-      `todos/${id}`,
-      {
-        method: 'DELETE',
-        headers: new Headers({ Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' }),
-      },
-      () => {}
-    );
-    dispatchTodoAction({ type: 'DELETE', id });
-  };
+  const deleteTodoHandler = useCallback(
+    async (id: number) => {
+      await sendRequest(
+        `todos/${id}`,
+        {
+          method: 'DELETE',
+          headers: new Headers({ Authorization: `Bearer ${jwt}`, 'Content-Type': 'application/json' }),
+        },
+        () => {}
+      );
+      dispatchTodoAction({ type: 'DELETE', id });
+    },
+    [sendRequest, jwt]
+  );
 
-  const checkTodoHandler = (id: number) => {
+  const checkTodoHandler = useCallback((id: number) => {
     dispatchTodoAction({ type: 'CHECK', id });
-  };
+  }, []);
 
-  const todoContext = {
-    todoList: todoState?.todoList,
-    fetchTodo: fetchTodoHandler,
-    addTodo: addTodoHandler,
-    updateTodo: updateTodoHandler,
-    deleteTodo: deleteTodoHandler,
-    checkTodo: checkTodoHandler,
-  };
+  const todoContext = useMemo(
+    () => ({
+      todoList: todoState?.todoList,
+      fetchTodo: fetchTodoHandler,
+      addTodo: addTodoHandler,
+      updateTodo: updateTodoHandler,
+      deleteTodo: deleteTodoHandler,
+      checkTodo: checkTodoHandler,
+    }),
+    [todoState?.todoList, fetchTodoHandler, addTodoHandler, updateTodoHandler, deleteTodoHandler, checkTodoHandler]
+  );
 
   return <TodoContext.Provider value={todoContext}>{children}</TodoContext.Provider>;
 };

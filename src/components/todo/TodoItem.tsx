@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import styled from '@emotion/styled';
 import { TTodo, TTodoMode } from 'src/typing/todo';
 import EditModeItem from './EditModeItem';
@@ -25,7 +25,7 @@ const TodoItem = (props: TProps) => {
   );
 };
 
-export default TodoItem;
+export default memo(TodoItem);
 
 const Item = styled.li`
   display: flex;
