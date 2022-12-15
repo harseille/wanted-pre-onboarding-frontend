@@ -1,5 +1,5 @@
 import { useEffect, useRef, useContext } from 'react';
-import TodoContext from 'src/store/todo/todo-context';
+import { TodoActionContext } from 'src/store/todo/todo-context';
 import styled from '@emotion/styled';
 import { TTodo } from 'src/typing/todo';
 import { Input } from '../common';
@@ -13,7 +13,7 @@ type Tprop = {
 const EditModeItem = (props: Tprop) => {
   const { todoInfo, changeTodoMode } = props;
   const editInput = useRef<HTMLInputElement>(null);
-  const { updateTodo } = useContext(TodoContext);
+  const { updateTodo } = useContext(TodoActionContext);
 
   useEffect(() => {
     editInput.current!.value = todoInfo.todo;

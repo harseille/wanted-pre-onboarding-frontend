@@ -1,18 +1,19 @@
 import { useContext, useEffect } from 'react';
-import TodoContext from 'src/store/todo/todo-context';
+import { TodoActionContext, TodoContext } from 'src/store/todo/todo-context';
 import styled from '@emotion/styled';
 import TodoItem from './TodoItem';
 
 const TodoList = () => {
-  const todoCtx = useContext(TodoContext);
+  const { todoList } = useContext(TodoContext);
+  const { fetchTodo } = useContext(TodoActionContext);
 
   useEffect(() => {
-    todoCtx.fetchTodo();
-  }, []);
+    fetchTodo();
+  }, [fetchTodo]);
 
   return (
     <List>
-      {todoCtx.todoList.map(todoInfo => (
+      {todoList.map(todoInfo => (
         <TodoItem todoInfo={todoInfo} key={todoInfo.id} />
       ))}
     </List>

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { Input, Button } from 'src/components/common';
-import TodoContext from 'src/store/todo/todo-context';
+import { TodoActionContext } from 'src/store/todo/todo-context';
 
 const TodoForm = () => {
   const todoInputRef = useRef<HTMLInputElement>(null);
-  const todoCtx = useContext(TodoContext);
+  const { addTodo } = useContext(TodoActionContext);
 
   useEffect(() => {
     todoInputRef.current?.focus();
@@ -14,7 +14,7 @@ const TodoForm = () => {
   const submitTodoHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    todoCtx.addTodo(todoInputRef.current!.value);
+    addTodo(todoInputRef.current!.value);
     todoInputRef.current!.value = '';
   };
 

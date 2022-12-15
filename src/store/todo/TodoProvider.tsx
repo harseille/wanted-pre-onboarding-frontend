@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useReducer, useRef } from 'react';
 import { useHttp, useJWT } from 'src/hooks';
 import { TTodo, TDefaultTodo, TTodoMode } from 'src/typing/todo';
-import TodoContext from './todo-context';
+import { TodoContext, TodoActionContext } from './todo-context';
 
 type TAction = {
   type: string;
@@ -128,19 +128,24 @@ const TodoProvider = ({ children }: TProvier) => {
     dispatchTodoAction({ type: 'CHECK', id });
   }, []);
 
-  const todoContext = useMemo(
+  const todoActionContext = useMemo(
     () => ({
-      todoList: todoState?.todoList,
       fetchTodo: fetchTodoHandler,
       addTodo: addTodoHandler,
       updateTodo: updateTodoHandler,
       deleteTodo: deleteTodoHandler,
       checkTodo: checkTodoHandler,
     }),
-    [todoState?.todoList, fetchTodoHandler, addTodoHandler, updateTodoHandler, deleteTodoHandler, checkTodoHandler]
+    [fetchTodoHandler, addTodoHandler, updateTodoHandler, deleteTodoHandler, checkTodoHandler]
   );
 
-  return <TodoContext.Provider value={todoContext}>{children}</TodoContext.Provider>;
+  const todoContext = useMemo(() => todoState, [todoState]);
+
+  return (
+    <TodoContext.Provider value={todoContext}>
+      <TodoActionContext.Provider value={todoActionContext}>{children}</TodoActionContext.Provider>
+    </TodoContext.Provider>
+  );
 };
 
 export default TodoProvider;
