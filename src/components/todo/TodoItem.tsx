@@ -17,6 +17,8 @@ const TodoItem = (props: TProps) => {
     if (todoMode === 'edit') setTodoMode('view');
   };
 
+  console.log('render TodoItem', todoInfo.id);
+
   return (
     <Item key={todoInfo.id}>
       {todoMode === 'edit' && <EditModeItem todoInfo={todoInfo} changeTodoMode={changeTodoMode} />}

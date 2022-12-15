@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import styled from '@emotion/styled';
-import TodoContext from 'src/store/todo/todo-context';
+import { TodoActionContext } from 'src/store/todo/todo-context';
 import { TTodo } from 'src/typing/todo';
 import TodoButtonGroup from './TodoButtonGroup';
 
@@ -11,7 +11,7 @@ type TProps = {
 
 const ViewModeItem = (props: TProps) => {
   const { todoInfo, changeTodoMode } = props;
-  const { deleteTodo, checkTodo } = useContext(TodoContext);
+  const { deleteTodo, checkTodo } = useContext(TodoActionContext);
 
   const onCheckTodoHandler = () => {
     checkTodo(todoInfo.id);

@@ -1,8 +1,7 @@
-import React from 'react';
-import { TTodo } from 'src/typing/todo';
+import { createContext } from 'react';
+import { TDefaultTodo } from 'src/typing/todo';
 
-type TContext = {
-  todoList: TTodo[] | [];
+type TActionContext = {
   fetchTodo: () => void;
   addTodo: (newTodo: string) => void;
   updateTodo: (id: number, uptateTodo: string, isCompleted: boolean) => void;
@@ -10,8 +9,11 @@ type TContext = {
   checkTodo: (id: number) => void;
 };
 
-const TodoContext = React.createContext<TContext>({
+const TodoContext = createContext<TDefaultTodo>({
   todoList: [],
+});
+
+const TodoActionContext = createContext<TActionContext>({
   fetchTodo: () => [],
   addTodo: (newTodo: string) => {},
   updateTodo: (id: number, uptateTodo: string, isCompleted: boolean) => {},
@@ -19,4 +21,4 @@ const TodoContext = React.createContext<TContext>({
   checkTodo: (id: number) => {},
 });
 
-export default TodoContext;
+export { TodoContext, TodoActionContext };
